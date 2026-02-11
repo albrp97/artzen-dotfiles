@@ -1,0 +1,162 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# --- 1. THE LAYOUT ---
+# Gradient Flow: Color 1 -> Color 2 -> Color 3 -> Color 4 -> Color 5
+format = """
+[](color1)\
+$os\
+$username\
+[](bg:color2 fg:color1)\
+$directory\
+[](bg:color3 fg:color2)\
+$git_branch\
+$git_status\
+[](bg:color4 fg:color3)\
+$c$rust$golang$nodejs$php$java$kotlin$haskell$python\
+[](bg:color5 fg:color4)\
+$cmd_duration\
+[ ](fg:color5)\
+$line_break\
+$character"""
+
+# --- 2. CUSTOM GRADIENT PALETTE ---
+# Calculated mathematically from #da7a6f (Start) to #b18d85 (End)
+palette = 'custom_gradient'
+
+[palettes.custom_gradient]
+base    = "#181c1f" # Text color (Dark Background)
+
+color1  = "#da7a6f" # Bright Salmon (Your User Color)
+color2  = "#d07f74" # Step 2
+color3  = "#c6847a" # Step 3 (Midpoint)
+color4  = "#bc897f" # Step 4
+color5  = "#b18d85" # Muted Brown (Your Directory Color)
+
+# --- 3. MODULE SETTINGS ---
+
+[time]
+disabled = true
+
+[os]
+disabled = false
+style = "bg:color1 fg:base"
+format = '[$symbol]($style)'
+
+[os.symbols]
+Windows = " "
+Ubuntu = "󰕈 "
+SUSE = " "
+Raspbian = "󰐿 "
+Mint = "󰣭 "
+Macos = "󰀵 "
+Manjaro = " "
+Linux = "󰌽 "
+Gentoo = "󰣨 "
+Fedora = "󰣛 "
+Alpine = " "
+Amazon = " "
+Android = " "
+AOSC = " "
+Arch = "󰣇 "
+Artix = "󰣇 "
+CentOS = " "
+Debian = "󰣚 "
+Redhat = "󱄛 "
+RedHatEnterprise = "󱄛 "
+
+[username]
+show_always = true
+style_user = "bg:color1 fg:base bold"
+style_root = "bg:color1 fg:base bold"
+format = '[ $user ]($style)'
+
+[directory]
+style = "bg:color2 fg:base"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:color3"
+format = '[[ $symbol $branch ](fg:base bg:color3)]($style)'
+
+[git_status]
+style = "bg:color3"
+format = '[[($all_status$ahead_behind )](fg:base bg:color3)]($style)'
+
+# --- LANGUAGES (Color 4) ---
+
+[nodejs]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[c]
+symbol = " "
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[php]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[java]
+symbol = " "
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[kotlin]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[haskell]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version) ](fg:base bg:color4)]($style)'
+
+[python]
+symbol = ""
+style = "bg:color4"
+format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:base bg:color4)]($style)'
+
+[conda]
+symbol = " "
+style = "fg:base bg:color4"
+format = '[$symbol$environment ]($style)'
+ignore_base = false
+
+# --- END MODULES (Color 5) ---
+
+[cmd_duration]
+show_milliseconds = true
+format = "[$duration]($style)"
+style = "fg:base bg:color5 bold"
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[❯](bold color1)'
+error_symbol = '[✗](bold color1)'
+vimcmd_symbol = '[❮](bold color4)'

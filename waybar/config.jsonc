@@ -1,0 +1,187 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 26,
+    "modules-left": [
+        "group/connections",
+        "group/hardware",
+        "group/net" // Changed to a group for consistent bubbles
+    ],
+    "modules-center": ["hyprland/workspaces"],
+    "modules-right": [
+        "group/controls",
+        "group/info"
+    ],
+
+    // --- GROUPS ---
+    "group/connections": {
+        "orientation": "inherit",
+        "modules": [
+            "network",
+            "bluetooth"
+        ]
+    },
+
+    "group/hardware": {
+        "orientation": "inherit",
+        "modules": [
+            "cpu",
+            "memory",
+            "custom/gpu"
+        ]
+    },
+
+    // New group for Net Traffic bubble
+    "group/net": {
+        "orientation": "inherit",
+        "modules": [
+            "custom/nettraffic"
+        ]
+    },
+
+    "group/controls": {
+        "orientation": "inherit",
+        "modules": [
+            "backlight",
+            "pulseaudio",
+            "battery"
+        ]
+    },
+
+    "group/info": {
+        "orientation": "inherit",
+        "modules": [
+            "custom/weather",
+            "clock#date",
+            "clock#time"
+        ]
+    },
+
+    // --- MODULES ---
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "on-click": "activate",
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10",
+            "active": "",
+            "default": ""
+        }
+    },
+
+    "network": {
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰈀",
+        "format-disconnected": "󰤮",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format": "{essid}",
+        "on-click": "omarchy-launch-wifi"
+    },
+
+    "custom/nettraffic": {
+        "exec": "bash -c 'iface=$(ip route | grep \"^default\" | grep -o \"dev [^ ]*\" | cut -d\" \" -f2); if [ -z \"$iface\" ]; then echo \" 0.0   0.0\"; exit; fi; rx1=$(cat /sys/class/net/$iface/statistics/rx_bytes); tx1=$(cat /sys/class/net/$iface/statistics/tx_bytes); sleep 1; rx2=$(cat /sys/class/net/$iface/statistics/rx_bytes); tx2=$(cat /sys/class/net/$iface/statistics/tx_bytes); echo | awk -v r1=$rx1 -v r2=$rx2 -v t1=$tx1 -v t2=$tx2 \"{printf \\\" %.1f   %.1f\\\", (r2-r1)/1048576, (t2-t1)/1048576}\"'",
+        "format": "{}",
+        "interval": 2,
+        "on-click": "omarchy-launch-wifi"
+    },
+
+    "bluetooth": {
+        "format": "",
+        "format-connected": "",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "on-click": "omarchy-launch-bluetooth"
+    },
+
+    "cpu": {
+        "interval": 10,
+        "format": " {usage}%",
+        "max-length": 10,
+        "on-click": "xdg-terminal-exec -e btop"
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": " {percentage}%",
+        "max-length": 10,
+        "on-click": "xdg-terminal-exec -e btop"
+    },
+
+    "custom/gpu": {
+        "exec": "bash -c 'amd_path=$(find /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | head -n 1); amd=$(cat \"$amd_path\" 2>/dev/null || echo 0); nvidia=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null || echo 0); if [ \"$amd\" -gt \"$nvidia\" ]; then echo \"$amd\"; else echo \"$nvidia\"; fi'",
+        "format": "󰢮 {}%",
+        "return-type": "",
+        "interval": 2,
+        "on-click": "xdg-terminal-exec -e nvtop"
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl set 1%+",
+        "on-scroll-down": "brightnessctl set 1%-",
+        "min-length": 6
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-muted": "",
+        "on-click": "xdg-terminal-exec -e alsamixer",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        }
+    },
+
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+
+    "custom/weather": {
+        "format": "{}", 
+        "return-type": "json",
+        "exec": "~/.config/waybar/weather.sh",
+        "interval": 600,
+        "on-click": "xdg-open https://wttr.in/Granada"
+    },
+
+    "clock#date": {
+        "format": " {:%d-%m-%Y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{:%Y-%m-%d}</small></tt>"
+    },
+
+    "clock#time": {
+        "format": " {:%H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{:%Y-%m-%d}</small></tt>"
+    }
+}

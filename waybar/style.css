@@ -1,0 +1,125 @@
+/* --- Color Definitions --- */
+@define-color main-bg #181c1f;
+@define-color main-fg #fdf9f8;
+@define-color title #9a8c8a;
+@define-color hi-fg #da7a6f; /* The Red color */
+@define-color selected-bg #b18d85;
+@define-color selected-fg #fdf9f8;
+@define-color inactive-fg #b18d85;
+
+/* General Reset */
+* {
+    border: none;
+    border-radius: 6px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 0px;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#window {
+    background: transparent;
+}
+
+/* --- Workspaces (Center) --- */
+#workspaces {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 10px;
+    
+    /* NEW: Gradient matching the bubbles */
+    /* Dark top to Red-Brown bottom, both 50% transparent */
+    background-image: linear-gradient(to bottom, rgba(24, 28, 31, 0.5), rgba(92, 50, 46, 0.5));
+    
+    padding: 0px 5px;
+}
+
+#workspaces button {
+    transition: none;
+    color: @hi-fg; 
+    background: transparent;
+    padding: 2px 5px;
+    font-size: 14px; 
+}
+
+#workspaces button:hover {
+    transition: none;
+    box-shadow: inherit;
+    text-shadow: inherit;
+    color: @main-fg;
+}
+
+#workspaces button.active {
+    color: @hi-fg; 
+    background: transparent; 
+}
+
+/* --- UNIFIED BUBBLE STYLING (Containers) --- */
+/* Note: #net added here for the net traffic group bubble */
+#connections, #hardware, #net, #controls, #info {
+    /* NEW GRADIENT: Dark (top) to Dark Red (bottom), both 50% transparent */
+    /* Top color is rgba based on @main-bg (#181c1f) */
+    /* Bottom color is a darkened version of the red, semi-transparent */
+    background-image: linear-gradient(to bottom, rgba(24, 28, 31, 0.5), rgba(92, 50, 46, 0.5));
+    
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-radius: 10px;
+}
+
+/* --- Inner Modules (Text & Icons) --- */
+/* Ensures all text inside these modules, including weather, is Red */
+#network, #bluetooth, 
+#cpu, #memory, #custom-gpu,
+#custom-nettraffic,
+#backlight, #pulseaudio, #battery,
+#clock, #custom-weather {
+    background: transparent;
+    color: @hi-fg; /* Red color */
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0;
+}
+
+/* --- Battery Critical State --- */
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: @main-fg;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    border-radius: 10px; 
+}
+
+/* Tooltip Styling */
+tooltip {
+    border-radius: 10px;
+    background-color: @main-bg;
+    opacity: 0.9;
+    padding: 15px;
+    margin: 0px;
+}
+
+tooltip label {
+    color: @main-fg;
+}
+
+@keyframes blink {
+    to {
+        background-color: @main-fg;
+        color: #f53c3c;
+    }
+}

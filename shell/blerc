@@ -1,0 +1,82 @@
+# Enable the popup menu for completions
+bleopt complete_auto_menu=1
+
+# (Optional) Make the menu interaction feel more like a modern UI
+bleopt complete_menu_style=align
+
+# --- 1. CORE TEXT & SELECTION ---
+ble-face -s auto_complete           fg=#b18d85,italic
+ble-face -s region                  bg=#b18d85,fg=#fdf9f8
+ble-face -s region_match            bg=#da7a6f,fg=#fdf9f8
+ble-face -s region_insert           bg=#9f6769,fg=#fdf9f8
+ble-face -s region_target           fg=#da7a6f,bold
+
+# --- 2. COMMANDS (Replacing Green/Blue/Teal) ---
+ble-face -s syntax_command          fg=#da7a6f
+ble-face -s command_alias           fg=#da7a6f
+ble-face -s command_builtin         fg=#da7a6f
+ble-face -s command_builtin_dot     fg=#da7a6f,bold
+ble-face -s command_directory       fg=#da7a6f,underline
+ble-face -s command_file            fg=#da7a6f
+ble-face -s command_function        fg=#da7a6f
+ble-face -s command_jobs            fg=#da7a6f,bold
+ble-face -s command_keyword         fg=#da7a6f
+
+# --- 3. ARGUMENTS & OPTIONS ---
+ble-face -s argument_option         fg=#b97670
+ble-face -s argument_error          fg=#fdf9f8,bg=#da7a6f
+
+# --- 4. SYNTAX ELEMENTS ---
+ble-face -s syntax_default          fg=#fdf9f8
+ble-face -s syntax_comment          fg=#9a8c8a,italic
+ble-face -s syntax_quoted           fg=#9f6769
+ble-face -s syntax_quotation        fg=#9f6769,bold
+ble-face -s syntax_escape           fg=#b18d85,bold
+ble-face -s syntax_expr             fg=#fdf9f8
+ble-face -s syntax_error            fg=#fdf9f8,bg=#da7a6f
+ble-face -s syntax_brace            fg=#fdf9f8,bold
+ble-face -s syntax_delimiter        fg=#fdf9f8,bold
+ble-face -s syntax_glob             fg=#b18d85,bold
+ble-face -s syntax_tilde            fg=#b18d85,bold
+
+# --- 5. VARIABLES (Replacing Orange/Purple) ---
+ble-face -s syntax_varname          fg=#b18d85
+ble-face -s varname_array           fg=#b18d85,bold
+ble-face -s varname_empty           fg=#9a8c8a
+ble-face -s varname_export          fg=#da7a6f,bold
+ble-face -s varname_expr            fg=#da7a6f,bold
+ble-face -s varname_hash            fg=#b18d85,bold
+ble-face -s varname_number          fg=#bb6d6c
+ble-face -s varname_readonly        fg=#da7a6f
+ble-face -s varname_transform       fg=#b97670,bold
+ble-face -s varname_unset           fg=#9a8c8a
+
+# --- 6. FILENAMES (ls colors) ---
+# Executables -> Highlight Color
+ble-face -s filename_executable     fg=#da7a6f,underline
+# Links -> Mid-tone Pink
+ble-face -s filename_link           fg=#bb6d6c,underline
+# Directories -> Highlight or Pinkish
+ble-face -s filename_directory      fg=#da7a6f,underline
+# Archives/Compressed -> Box Color
+ble-face -s filename_other          fg=#fdf9f8
+ble-face -s filename_warning        fg=#da7a6f,underline,bold
+ble-face -s filename_url            fg=#b18d85,underline
+
+# --- 7. MENUS ---
+ble-face -s menu_complete_selected  bg=#b18d85,fg=#fdf9f8
+ble-face -s menu_complete_match     fg=#da7a6f,bold
+ble-face -s menu_filter_input       fg=#fdf9f8,bg=#9f6769
+
+# --- 8. BEHAVIOR TWEAKS (THE FIX) ---
+
+# 1. Disable "Safe Paste" (Bracketed Paste).
+#    This prevents ble.sh from capturing the paste in a buffer 
+#    and asking for confirmation (Ctrl+J).
+bleopt input_encoding=UTF-8
+
+# 2. DO NOT bind 'RET' to 'accept-line' here.
+#    By removing the custom binding we added earlier, we let ble.sh
+#    use its default "Smart Enter" logic.
+#    - If command is complete -> Run it.
+#    - If command has open quotes (python "...) -> Insert newline & Wait.
